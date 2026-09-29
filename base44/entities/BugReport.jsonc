@@ -1,0 +1,257 @@
+{
+  "name": "BugReport",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "A short title for the bug report"
+    },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "code",
+        "url",
+        "project",
+        "github"
+      ],
+      "default": "code",
+      "description": "What type of input was analyzed"
+    },
+    "language": {
+      "type": "string",
+      "description": "Programming language detected (e.g. javascript, python)"
+    },
+    "source_content": {
+      "type": "string",
+      "description": "The code or URL that was analyzed"
+    },
+    "corrected_code": {
+      "type": "string",
+      "description": "The full corrected version of the code with all detected bugs fixed"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "analyzing",
+        "completed",
+        "failed"
+      ],
+      "default": "analyzing"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Overall summary of the analysis"
+    },
+    "severity_counts": {
+      "type": "object",
+      "properties": {
+        "critical": {
+          "type": "number",
+          "default": 0
+        },
+        "warning": {
+          "type": "number",
+          "default": 0
+        },
+        "info": {
+          "type": "number",
+          "default": 0
+        }
+      }
+    },
+    "bugs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "critical",
+              "warning",
+              "info"
+            ]
+          },
+          "line": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "fix": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "impact": {
+            "type": "object",
+            "description": "AI-estimated bug impact analysis (estimates, not confirmed facts)",
+            "properties": {
+              "impact_score": {
+                "type": "number",
+                "description": "0-100 estimated impact score (higher = greater impact)"
+              },
+              "risk_level": {
+                "type": "string",
+                "enum": [
+                  "Low",
+                  "Medium",
+                  "High",
+                  "Critical"
+                ]
+              },
+              "root_component": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string"
+                  },
+                  "detail": {
+                    "type": "string"
+                  }
+                }
+              },
+              "affected_files": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "reason": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "affected_features": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "impact": {
+                      "type": "string"
+                    },
+                    "severity": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "dependency_chain": {
+                "type": "object",
+                "properties": {
+                  "nodes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "file": {
+                          "type": "string"
+                        },
+                        "detail": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "edges": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string"
+                        },
+                        "to": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "user_impact": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "audience": {
+                      "type": "string"
+                    },
+                    "workflow": {
+                      "type": "string"
+                    },
+                    "severity": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "blast_radius": {
+                "type": "object",
+                "properties": {
+                  "level": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "affected_count": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "health_score": {
+      "type": "number",
+      "description": "0-100 code health score"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "User-assigned tags like security, performance, etc."
+    },
+    "repo_name": {
+      "type": "string",
+      "description": "GitHub repository name if imported from GitHub"
+    }
+  },
+  "required": [
+    "title",
+    "source_type",
+    "source_content"
+  ]
+}
